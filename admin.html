@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>커뮤니티 센터 진행현황 관리자</title>
+<style>
+  :root{--bg:#f5f7fb;--panel:#fff;--line:#dfe6ef;--text:#17212b;--sub:#556372;--green:#2e8b57;--green-soft:#e9f7ef;--blue:#2d6cdf;--blue-soft:#eef4ff;--amber:#d28a16;--amber-soft:#fff6e5;--danger:#c84444;--shadow:0 10px 30px rgba(20,34,60,.08)}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;line-height:1.5}
+  .app{max-width:1280px;margin:0 auto;padding:18px 16px 40px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.title{font-size:24px;font-weight:900}.actions{display:flex;gap:8px;flex-wrap:wrap}
+  button,.btn{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:10px;padding:9px 12px;font-weight:800;cursor:pointer;text-decoration:none;font-size:14px}button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}button.danger{color:var(--danger)}
+  .layout{display:grid;grid-template-columns:330px 1fr;gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);min-width:0}.panel-head{padding:14px 16px;border-bottom:1px solid var(--line);font-weight:900}.panel-body{padding:16px}
+  .stage-list{display:flex;flex-direction:column;gap:8px}.stage-btn{display:grid;grid-template-columns:64px 1fr auto;gap:8px;align-items:center;text-align:left;width:100%;padding:10px;border-radius:12px}.stage-btn.active{border-color:var(--blue);background:#f6faff}.stage-no{font-weight:900}.stage-name{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.badge{font-size:12px;font-weight:900;border-radius:999px;padding:3px 8px}.done{background:var(--green-soft);color:var(--green)}.current{background:var(--blue-soft);color:var(--blue)}.next,.later,.goal{background:var(--amber-soft);color:var(--amber)}
+  label{display:block;font-size:12px;font-weight:900;color:var(--sub);margin:14px 0 6px}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 11px;font:inherit;background:#fff;color:var(--text)}textarea{min-height:92px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hint{font-size:12px;color:var(--sub);margin-top:8px}.preview{border:1px dashed var(--line);border-radius:14px;padding:12px;background:#fbfdff}.preview-title{font-size:18px;font-weight:900}.preview-text{font-size:13px;color:var(--sub);margin-top:5px}.toast{display:none;margin-bottom:12px;padding:10px 12px;border-radius:12px;background:#edf8f1;color:#236b45;font-weight:800}.toast.show{display:block}
+  @media(max-width:860px){.layout{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div>
+      <div class="title">진행현황 관리자</div>
+      <div class="hint">1차 편집기. 단계 기본 정보 수정 + JSON 다운로드.</div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="./test-json.html" target="_blank">테스트 페이지</a>
+      <button id="copyJson">JSON 복사</button>
+      <button class="primary" id="downloadJson">JSON 다운로드</button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <div class="layout">
+    <section class="panel">
+      <div class="panel-head">단계 목록</div>
+      <div class="panel-body">
+        <div class="stage-list" id="stageList"></div>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-head">선택 단계 편집</div>
+      <div class="panel-body">
+        <div id="empty">단계를 선택하세요.</div>
+        <form id="editor" hidden>
+          <div class="row">
+            <div>
+              <label for="state">상태</label>
+              <select id="state">
+                <option value="done">완료</option>
+                <option value="current">현재</option>
+                <option value="next">다음</option>
+                <option value="later">이후</option>
+                <option value="goal">목표</option>
+              </select>
+            </div>
+            <div>
+              <label for="period">기간/표시 문구</label>
+              <input id="period" placeholder="예: 현재, 다음, 2026.03"/>
+            </div>
+          </div>
+          <label for="title">큰 흐름 제목</label>
+          <input id="title"/>
+          <label for="overviewText">큰 흐름 설명</label>
+          <textarea id="overviewText"></textarea>
+          <label for="detailTitle">세부현황 제목</label>
+          <input id="detailTitle"/>
+          <label for="detailSummary">세부현황 설명</label>
+          <textarea id="detailSummary"></textarea>
+          <label>간단 미리보기</label>
+          <div class="preview">
+            <span class="badge" id="previewBadge"></span>
+            <div class="preview-title" id="previewTitle"></div>
+            <div class="preview-text" id="previewText"></div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+<script src="./assets/js/admin.js"></script>
+</body>
+</html>
